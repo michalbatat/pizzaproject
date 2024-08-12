@@ -28,12 +28,11 @@ export default function Cusromer() {
 
     const addPizza=(e) =>{
         e.preventDefault();
-      
         dis(saveCusromer(e))
-        
-        localStorage.setItem('customer', JSON.stringify(customer));
-        console.log(JSON.parse(localStorage.getItem('customer')))
-        console.log(cust)
+        console.log(e)
+        // localStorage.setItem('customer', JSON.stringify(customer));
+        console.log(JSON.parse(localStorage.getItem('cust')))
+       
         navigate(`/AddPizza`)
     }
 

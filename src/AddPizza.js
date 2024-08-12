@@ -38,6 +38,10 @@ export default function AddPizza() {
         if (type === "checkbox") {
             value = e.target.checked;
             console.log(value)
+            p = { ...pizz }
+            p.boolExtensions[valExt] = value;
+            setPizz(p);
+            console.log(p)
         }
 
         if (type === "select") {
@@ -48,18 +52,7 @@ export default function AddPizza() {
             setPizz(p);
         }
 
-        if (type === "select") {
-            p = { ...pizz }
-            p[name] = value;
-            setPizz(p);
-        }
-
-        if (type === "checkbox") {
-            p = { ...pizz }
-            p.boolExtensions[valExt] = value;
-            setPizz(p);
-            console.log(p)
-        }
+        
     }
 
 
@@ -86,7 +79,7 @@ export default function AddPizza() {
         localStorage.setItem('cart', JSON.stringify(pizz));
         console.log(JSON.parse(localStorage.getItem('cart')))
         console.log(JSON.parse(localStorage.getItem('pizz')))
-        console.log(cust)
+        
         alert("הפיצה נוספה בהצלחה")
         navigate(`/Customer`)
     }
@@ -114,8 +107,8 @@ export default function AddPizza() {
                                         <Select
                                             labelId="demo-simple-select-error-label"
                                             id="demo-simple-select-error"
-                                            type="select"
                                             onChange={change}
+                                            type="select"
                                             name="size"
                                         >
                                             {sizePizza.map((item) => {
