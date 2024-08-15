@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import { currnetCustomer } from './store/reducers/customer'
+
 
 
 export default function Cusromer() {
@@ -39,11 +39,11 @@ export default function Cusromer() {
     function addPizza(e) {
      
      
-        navigate(`/AddPizza`)
+        navigate(`/AddPizza`, { state: { item: cust } });
     }
 
     function myOrder() {
-        navigate(`/`)
+        navigate(`/MyOrder`)
     }
     function sendOrder() {
         navigate(`/`)

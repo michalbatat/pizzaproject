@@ -1,8 +1,8 @@
 import { Select } from "@mui/material";
 import { useState } from "react";
 import { addPizza } from "./store/actions/pizza"
-import { useDispatch,useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import * as React from 'react';
 import Box from '@mui/material/Box';
@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import { addToCart } from "./store/actions/order";
+import { addPizzaToCart } from "./store/actions/pizza";
 
 
 export default function AddPizza() {
@@ -23,21 +23,26 @@ export default function AddPizza() {
     let extension1 = [0, 1, 2, 3];
     let extension2 = ["זיתים", "תירס", "עגבניות", "פטריות"];
     let [pizz, setPizz] = useState({ size: "", boolExtensions: [false, false, false, false], extensions: ["", "", "", ""] })
+    let [cart, setCart] = useState({ arrPizza: { sizePizza: "", extensionsPizza: [] } })
     let i = extension2.length + 1;
     let dis = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     let valExt = 0;
     let k = 0;
     let p;
-    let cust=useSelector(state=>state.cust.currnetCustomer);
-    console.log(JSON.parse(localStorage.getItem('cust')))
+    let myCart = useSelector(state => state.pizz.cart.arr)
+
     let change = (e) => {
         let { name, value, type } = e.target;
-        valExt = value;
-
+       console.log(e.target)
+       valExt = value;
+        console.log("name" + name)
+        console.log("type" + type)
+        console.log("value" + value)
         if (type === "checkbox") {
             value = e.target.checked;
-            console.log(value)
+
             p = { ...pizz }
             p.boolExtensions[valExt] = value;
             setPizz(p);
@@ -52,9 +57,27 @@ export default function AddPizza() {
             setPizz(p);
         }
 
-        
+
     }
 
+    let savePizzaInCart = (pizz) => {
+        let c = { ...cart }
+        c.arrPizza.sizePizza = pizz.size;
+        for (i = 0; i < pizz.extensions.length; i++) {
+            if (pizz.extensions[i] !== "") {
+                c.arrPizza.extensionsPizza.push(pizz.extensions[i])
+                console.log("+" + c.arrPizza.extensionsPizza[i])
+            }
+            else
+                break;
+
+        }
+        setCart(c);
+        dis(addPizzaToCart(c));
+        localStorage.setItem('c', JSON.stringify(c));
+        console.log(JSON.parse(localStorage.getItem('c')))
+        console.log(myCart)
+    }
 
     function ezer() {
         let ex = { ...pizz }
@@ -67,19 +90,18 @@ export default function AddPizza() {
         }
         setPizz(ex);
         console.log(pizz.extensions)
-        console.log(pizz.size)
+        console.log(location.state.item)
     }
 
-    const save = (e) => {
+    const savePizza = (e) => {
         e.preventDefault();
         ezer();
         dis(addPizza(e));
         localStorage.setItem('pizz', JSON.stringify(pizz));
-        dis(addToCart(JSON.parse(localStorage.getItem('pizz'))))      
-        localStorage.setItem('cart', JSON.stringify(pizz));
-        console.log(JSON.parse(localStorage.getItem('cart')))
         console.log(JSON.parse(localStorage.getItem('pizz')))
-        
+
+        console.log(pizz)
+        savePizzaInCart(pizz)
         alert("הפיצה נוספה בהצלחה")
         navigate(`/Customer`)
     }
@@ -103,13 +125,14 @@ export default function AddPizza() {
 
                                 <div >
                                     <FormControl sx={{ marginLeft: 25, marginTop: "5%", minWidth: 120 }} >
-                                        <InputLabel >גודל הפיצה</InputLabel>
+                                        <InputLabel id="demo-simple-select-error-label">גודל הפיצה</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-error-label"
                                             id="demo-simple-select-error"
+                                            label="גודל הפיצה"
                                             onChange={change}
-                                            type="select"
                                             name="size"
+                                            type="select"
                                         >
                                             {sizePizza.map((item) => {
                                                 return (
@@ -121,7 +144,7 @@ export default function AddPizza() {
                                 </div>
 
                                 <div style={{ display: "table-row-group" }}>
-                                   
+
                                     <div style={{ marginLeft: 1, marginTop: "-50%" }}>
                                         {extension1.map((item, index) => {
                                             return (<ul > {extension2[item]}
@@ -133,7 +156,7 @@ export default function AddPizza() {
                                 </div>
 
                                 <div style={{ marginLeft: 120 }}>
-                                    <input type="button" value="שמור פיצה" onClick={save} />
+                                    <input type="button" value="שמור פיצה" onClick={savePizza} />
 
                                 </div>
                             </form >

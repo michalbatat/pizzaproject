@@ -4,3 +4,10 @@ export const addPizza=(pizza)=>{
         payload:pizza
     }
 }
+
+export const addPizzaToCart = (pizza) => {
+    return {
+        type: "ADD_PIZZA_TO_CART",
+        payload: { pizza }
+    }
+}
