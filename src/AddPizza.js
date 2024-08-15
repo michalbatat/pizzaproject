@@ -23,7 +23,7 @@ export default function AddPizza() {
     let extension1 = [0, 1, 2, 3];
     let extension2 = ["זיתים", "תירס", "עגבניות", "פטריות"];
     let [pizz, setPizz] = useState({ size: "", boolExtensions: [false, false, false, false], extensions: ["", "", "", ""] })
-    let [cart, setCart] = useState({ arrPizza: { sizePizza: "", extensionsPizza: [] } })
+    let [cart, setCart] = useState({ arrPizza: { name:"",sizePizza: "", extensionsPizza: [] } })
     let i = extension2.length + 1;
     let dis = useDispatch();
     const navigate = useNavigate();
@@ -32,6 +32,7 @@ export default function AddPizza() {
     let k = 0;
     let p;
     let myCart = useSelector(state => state.pizz.cart.arr)
+    let cust = useSelector(state => state.cust.currnetCustomer);
 
     let change = (e) => {
         let { name, value, type } = e.target;
@@ -49,7 +50,7 @@ export default function AddPizza() {
             console.log(p)
         }
 
-        if (type === "select") {
+        if (type === "select-on") {
             value = e.target.selected;
             console.log("+++++" + value)
             p = { ...pizz }
@@ -62,6 +63,7 @@ export default function AddPizza() {
 
     let savePizzaInCart = (pizz) => {
         let c = { ...cart }
+        c.arrPizza.name=cust;
         c.arrPizza.sizePizza = pizz.size;
         for (i = 0; i < pizz.extensions.length; i++) {
             if (pizz.extensions[i] !== "") {
@@ -73,6 +75,7 @@ export default function AddPizza() {
 
         }
         setCart(c);
+        
         dis(addPizzaToCart(c));
         localStorage.setItem('c', JSON.stringify(c));
         console.log(JSON.parse(localStorage.getItem('c')))
@@ -112,7 +115,7 @@ export default function AddPizza() {
             <React.Fragment>
                 <CssBaseline />
                 <Container maxWidth="sm" >
-                    <Box sx={{ bgcolor: '#b19725', height: '100vh' }} >
+                    <Box sx={{ bgcolor: 'beige', height: '100vh' }} >
 
                         <Box
                             component="form"
@@ -126,7 +129,7 @@ export default function AddPizza() {
                                 <div >
                                     <FormControl sx={{ marginLeft: 25, marginTop: "5%", minWidth: 120 }} >
                                         <InputLabel id="demo-simple-select-error-label">גודל הפיצה</InputLabel>
-                                        <Select
+                                        <select
                                             labelId="demo-simple-select-error-label"
                                             id="demo-simple-select-error"
                                             label="גודל הפיצה"
@@ -136,10 +139,10 @@ export default function AddPizza() {
                                         >
                                             {sizePizza.map((item) => {
                                                 return (
-                                                    <MenuItem value={item}>{item}</MenuItem>
+                                                    <option value={item}>{item}</option>
                                                 )
-                                            })}
-                                        </Select>
+                                            })}</select>
+                                        
                                     </FormControl>
                                 </div>
 

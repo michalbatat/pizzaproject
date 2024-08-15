@@ -12,7 +12,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, combineReducers } from 'redux';
 import AddPizza from './AddPizza';
 
-const p = createStore(combineReducers({ piz:pizzaReducer,cust:customerReducer,ord:orderReducer}), composeWithDevTools())
+const p = createStore(combineReducers({ pizz:pizzaReducer,cust:customerReducer,ord:orderReducer}), composeWithDevTools())
 ReactDOM.render(
   <React.StrictMode>
   <Provider store={p}>
