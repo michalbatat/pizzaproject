@@ -35,6 +35,7 @@ export default function Cusromer() {
 
     const saveCust = (e) => {
         e.preventDefault();
+        console.log(e.target.value)
         dis(saveCusromer(e.target.value));
         console.log(cust)
         localStorage.setItem('e.target.value', JSON.stringify(e.target.value));
@@ -50,6 +51,12 @@ export default function Cusromer() {
     function myOrder() {
         navigate(`/MyOrder`)
     }
+    
+    function updatePizza(e){
+        console.log(e)
+        navigate(`/UpdatePizza`, { state: { item: e } })
+    }
+
     function sendOrder() {
         navigate(`/`)
     }
@@ -111,7 +118,7 @@ export default function Cusromer() {
                                                     </Typography>
                                                 </CardContent>
                                                 <CardActions sx={{ marginRight: "34%", marginTop: "2%" }}>
-                                                    <Button size="large">ערוך פיצה</Button>
+                                                    <Button size="large" onClick={() => { updatePizza(item.pizza.arrPizza)}}>ערוך פיצה</Button>
                                                 </CardActions>
                                             </Card>
                                         </Fragment>
